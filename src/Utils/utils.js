@@ -1,30 +1,50 @@
-// ./utils/utils.js
-import { useToast } from '../Context/ToastContext';
+import { Toast } from 'primereact/toast';
+import React,{ useRef, createContext, useContext } from 'react';
 
-// Function để hiển thị Toast theo trạng thái
-export const showToast = (toastRef, severity, summary, detail) => {
-  if (toastRef.current) {
-    toastRef.current.show({
-      severity: severity,
-      summary: summary,
-      detail: detail,
-      life: 3000, // Thời gian hiển thị Toast (3 giây)
-    });
+// Tạo Context để quản lý Toast
+const ToastContext = createContext(null);
+
+/**
+ * Component GlobalToast khởi tạo Toast.
+ */
+export const GlobalToast = ({ children }) => {
+  const toastRef = useRef(null);
+
+  return (
+    <ToastContext.Provider value={toastRef}>
+      <Toast ref={toastRef} />
+      {children}
+    </ToastContext.Provider>
+  );
+};
+
+
+export const useToast = () => {
+  const toastRef = useContext(ToastContext);
+
+  if (!toastRef) {
+    throw new Error('useToast must be used within a GlobalToast provider');
   }
+
+  return toastRef;
 };
 
-export const showSuccess = (toastRef, summary, detail) => {
-  showToast(toastRef, 'success', summary, detail);
-};
 
-export const showInfo = (toastRef, summary, detail) => {
-  showToast(toastRef, 'info', summary, detail);
-};
+export const showToast = (toastRef, severity, summary, detail, life = 3000) => {
+  if (!toastRef.current) {
+    console.error('Toast reference is not initialized.');
+    return;
+  }
 
-export const showWarning = (toastRef, summary, detail) => {
-  showToast(toastRef, 'warn', summary, detail);
-};
+  if (!['success', 'info', 'warn', 'error'].includes(severity)) {
+    console.error('Invalid severity type. Allowed values: success, info, warn, error');
+    return;
+  }
 
-export const showError = (toastRef, summary, detail) => {
-  showToast(toastRef, 'error', summary, detail);
+  toastRef.current.show({
+    severity,
+    summary,
+    detail,
+    life,
+  });
 };

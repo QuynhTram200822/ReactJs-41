@@ -2,14 +2,15 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { ToastProvider } from '../src/Context/ToastContext';
+import { GlobalToast } from "./Utils/utils"; 
 import StudentList from "./pages/StudentTable";
 
 import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <ToastProvider> 
+    <GlobalToast >
+    
     <Router>
       <Routes>
         <Route
@@ -21,7 +22,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
-    </ToastProvider>
+    </GlobalToast >
   );
 }
 

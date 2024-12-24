@@ -2,32 +2,28 @@ import React from "react";
 import "./Studenttable.css";
 import { Button } from "primereact/button";
 
-import { useToast } from "../../Context/ToastContext"; 
-import {
-  showSuccess,
-  showError,
-  showInfo,
-  showWarning,
-} from "../../Utils/utils"; 
+import { useToast, showToast } from '../../Utils/utils';
 
 function StudentTable() {
   const toastRef = useToast();
 
   const handleSuccess = () => {
-    showSuccess(toastRef, "Success!", "This is a success message.");
+    showToast(toastRef, 'success', 'Success', 'This is a reusable toast message!');
   };
 
-  const handleError = () => {
-    showError(toastRef, "Error!", "Something went wrong.");
-  };
-
-  const handleInfo = () => {
-    showInfo(toastRef, "Info", "Here is some important information.");
+   const handleInfo = () => {
+    showToast(toastRef, 'info', "Info", "Here is some important information.");
   };
 
   const handleWarning = () => {
-    showWarning(toastRef, "Warning", "This is a warning message.");
+    showToast(toastRef, 'warn', "Warning", "This is a warning message.");
   };
+
+  const handleError = () => {
+    showToast(toastRef, 'error', "Error!", "Something went wrong.");
+  };
+
+ 
   return (
     <div className="card flex justify-content-center">
       <div className="flex flex-wrap gap-2 justify-content-center align-items-center">
